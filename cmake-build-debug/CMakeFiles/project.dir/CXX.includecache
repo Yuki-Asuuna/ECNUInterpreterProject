@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/sunyh/Desktop/leetcode/ECNUInterpreterProject/ReadProgram.cpp
+ReadProgram.h
+C:/Users/sunyh/Desktop/leetcode/ECNUInterpreterProject/ReadProgram.h
+
+C:/Users/sunyh/Desktop/leetcode/ECNUInterpreterProject/ReadProgram.h
+cstdio
+-
+string
+-
+iostream
+-
+fstream
+-
+

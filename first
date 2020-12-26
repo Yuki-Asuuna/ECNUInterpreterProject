@@ -1,0 +1,36 @@
+FIRST(#):{}
+FIRST(():{( }
+FIRST()):{) }
+FIRST(*):{* }
+FIRST(+):{+ }
+FIRST(-):{- }
+FIRST(/):{/ }
+FIRST(;):{; }
+FIRST(<):{< }
+FIRST(<=):{<= }
+FIRST(=):{= }
+FIRST(==):{== }
+FIRST(>):{> }
+FIRST(>=):{>= }
+FIRST(ID):{ID }
+FIRST(NUM):{NUM }
+FIRST(arithexpr):{( ID NUM }
+FIRST(arithexprprime):{# + - }
+FIRST(assgstmt):{ID }
+FIRST(boolexpr):{( ID NUM }
+FIRST(boolop):{< <= == > >= }
+FIRST(compoundstmt):{{ }
+FIRST(else):{else }
+FIRST(if):{if }
+FIRST(ifstmt):{if }
+FIRST(multexpr):{( ID NUM }
+FIRST(multexprprime):{# * / }
+FIRST(program):{{ }
+FIRST(simpleexpr):{( ID NUM }
+FIRST(stmt):{ID if while { }
+FIRST(stmts):{# ID if while { }
+FIRST(then):{then }
+FIRST(while):{while }
+FIRST(whilestmt):{while }
+FIRST({):{{ }
+FIRST(}):{} }

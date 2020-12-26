@@ -1,0 +1,28 @@
+0:arithexpr->multexpr arithexprprime
+1:arithexprprime->+ multexpr arithexprprime
+2:arithexprprime->- multexpr arithexprprime
+3:arithexprprime->#
+4:assgstmt->ID = arithexpr ;
+5:boolexpr->arithexpr boolop arithexpr
+6:boolop-><
+7:boolop->>
+8:boolop-><=
+9:boolop->>=
+10:boolop->==
+11:compoundstmt->{ stmts }
+12:ifstmt->if ( boolexpr ) then stmt else stmt
+13:multexpr->simpleexpr multexprprime
+14:multexprprime->* simpleexpr multexprprime
+15:multexprprime->/ simpleexpr multexprprime
+16:multexprprime->#
+17:program->compoundstmt
+18:simpleexpr->ID
+19:simpleexpr->NUM
+20:simpleexpr->( arithexpr )
+21:stmt->ifstmt
+22:stmt->whilestmt
+23:stmt->assgstmt
+24:stmt->compoundstmt
+25:stmts->stmt stmts
+26:stmts->#
+27:whilestmt->while ( boolexpr ) stmt

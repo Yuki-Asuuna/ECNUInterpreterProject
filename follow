@@ -1,0 +1,14 @@
+FOLLOW(arithexpr):{) ; < <= == > >= }
+FOLLOW(arithexprprime):{) ; < <= == > >= }
+FOLLOW(assgstmt):{ID else if while { } }
+FOLLOW(boolexpr):{) }
+FOLLOW(boolop):{( ID NUM }
+FOLLOW(compoundstmt):{# ID else if while { } }
+FOLLOW(ifstmt):{ID else if while { } }
+FOLLOW(multexpr):{) + - ; < <= == > >= }
+FOLLOW(multexprprime):{) + - ; < <= == > >= }
+FOLLOW(program):{# }
+FOLLOW(simpleexpr):{) * + - / ; < <= == > >= }
+FOLLOW(stmt):{ID else if while { } }
+FOLLOW(stmts):{} }
+FOLLOW(whilestmt):{ID else if while { } }
