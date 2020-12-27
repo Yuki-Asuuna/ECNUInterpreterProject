@@ -43,7 +43,7 @@ int main() {
     //cout<<source<<endl;
 
     vector <quadraple> token=Lexical(source);
-    //LLGrammatical(token);
+    LLGrammatical(token);
     //LRGrammatical(token);
     FinalParser Parser(token);
     Parser.ProcessDecl();

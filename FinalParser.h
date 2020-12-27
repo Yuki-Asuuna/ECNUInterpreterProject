@@ -14,7 +14,7 @@ public:
     FinalParser(std::vector <quadraple> );
     void ProcessDecl();
     void PrintSymtable();
-    void match();
+    void match(std::string);
     std::string getnow();
     MiddleVal term();
     MiddleVal factor();

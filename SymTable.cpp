@@ -17,6 +17,10 @@ void SymTable::AddSym(Sym t) {
 }
 
 void SymTable::UpdateSym(std::string var,MiddleVal val) {
+    if(symtable.find(var)==symtable.end()){
+        std::cout<<"Undefined variable:"<<var<<std::endl;
+        exit(-1);
+    }
     if(symtable[var].Type=="real"){
         symtable[var].dValue=val.dVal;
     } else{

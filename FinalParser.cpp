@@ -30,10 +30,20 @@ void FinalParser::ProcessDecl() {
 
 void FinalParser::Start() {
     statement();
+    if(index!=token.size()){
+        std::cout<< "Unexpected Error At End Of The File."<<std::endl;
+        exit(-1);
+    }
+    std::cout << "Success!" << std::endl;
+    PrintSymtable();
 }
 
 
 std::string FinalParser::getnow() {
+    if(index >= token.size()){
+        std::cout<< "Unexpected Error At End Of The File."<<std::endl;
+        exit(-1);
+    }
     std::string val;
     if (token[index].tokentype == "identifier")
         val = "ID";
@@ -47,13 +57,21 @@ std::string FinalParser::getnow() {
 }
 
 
-void FinalParser::match() {
-    ++index;
+void FinalParser::match(std::string tk) {
     if (index >= token.size()) {
-        std::cout << "Success!" << std::endl;
-        PrintSymtable();
-        exit(0);
+        std::cout << "Unexpected Error"<<std::endl;
+        exit(-1);
     }
+    if (tk == "~") {
+        ++index;
+        return;
+    }
+    if (tk != getnow()) {
+        std::cout << "Error At:" << token[index].linenumber << ' ' << token[index].lineposition << std::endl;
+        exit(-1);
+    }
+    else
+        ++index;
 }
 
 
@@ -62,10 +80,10 @@ MiddleVal FinalParser::expression() {
     std::string tk = getnow();
     while (tk == "+" || tk == "-") {
         if (tk == "+") {
-            match();
+            match("+");
             temp += term();
         } else {
-            match();
+            match("-");
             temp -= term();
         }
         tk = getnow();
@@ -77,17 +95,17 @@ MiddleVal FinalParser::factor() {
     std::string tk = getnow();
     MiddleVal temp;
     if (tk == "(") {
-        match();
+        match("(");
         temp = expression();
-        match();
+        match(")");
     } else if (tk == "int" || tk == "real") {
         //token[index].attributevalue
         temp = MiddleVal(tk, token[index].attributevalue);
-        match();
+        match(tk);
     } else if (tk == "ID") {
         Sym t = table.GetValue(token[index].attributevalue);
         temp = MiddleVal(t);
-        match();
+        match("ID");
     }
     return temp;
 }
@@ -98,10 +116,10 @@ MiddleVal FinalParser::term() {
     std::string tk = getnow();
     while (tk == "*" || tk == "/") {
         if (tk == "*") {
-            match();
+            match("*");
             temp *= factor();
         } else {
-            match();
+            match("/");
             temp /= factor();
         }
         tk = getnow();
@@ -113,7 +131,7 @@ int FinalParser::boolAND() {
     int val = boolexp();
     std::string tk = getnow();
     while (tk == "&&") {
-        match();
+        match("&&");
         if (val == 0) return 0;         // short cut
         val = val & boolexp();
         if (val == 0) return 0;
@@ -126,7 +144,7 @@ int FinalParser::boolOR() {
     int val = boolAND();
     std::string tk = getnow();
     while (tk == "||") {
-        match();
+        match("||");
         if (val == 1) return 1;         // short cut
         val = val | boolAND();
     }
@@ -136,27 +154,27 @@ int FinalParser::boolOR() {
 int FinalParser::boolexp() {
     std::string tk = getnow();
     if (tk == "(") {
-        match();
+        match("(");
         int result = boolOR();
-        match();
+        match(")");
         return result;
     }
     MiddleVal temp = expression();
     tk = getnow();
     if (tk == ">") {
-        match();
+        match(">");
         return temp > expression();
     } else if (tk == "<") {
-        match();
+        match("<");
         return temp < expression();
     } else if (tk == ">=") {
-        match();
+        match(">=");
         return temp >= expression();
     } else if (tk == "<=") {
-        match();
+        match("<=");
         return temp <= expression();
     } else if (tk == "==") {
-        match();
+        match("==");
         return temp == expression();
     }
     return 0;
@@ -164,23 +182,23 @@ int FinalParser::boolexp() {
 
 void FinalParser::skipstatement() {
     if (getnow() == "{") {
-        match();
+        match("{");
         int count = 0;
         while (1) {
             if (count == 0 && getnow() == "}") {
-                match();
+                match("}");
                 break;
             }
             if (getnow() == "{") ++count;
             else if (getnow() == "}") --count;
-            match();
+            match("~");
         }
 
     } else {//assgstmt or other
         while (getnow() != ";") {
-            match();
+            match("~");
         }
-        match();//';'
+        match(";");//';'
     }
 
 }
@@ -188,17 +206,17 @@ void FinalParser::skipstatement() {
 MiddleVal FinalParser::statement() {
     std::string tk = getnow();
     if (tk == "{") {
-        match();
+        match("{");
         while (getnow() != "}") {
             statement();
         }
-        match();
+        match("}");
     } else if (tk == "if") {
-        match();//'if'
-        match();//'('
+        match("if");//'if'
+        match("(");//'('
         int boolresult = boolOR();
-        match();//')'
-        match();//'then'
+        match(")");//')'
+        match("then");//'then'
         if (boolresult) {
             statement();
         } else {
@@ -206,7 +224,7 @@ MiddleVal FinalParser::statement() {
         }
         tk = getnow();
         if (tk == "else") {
-            match();//'else'
+            match("else");//'else'
             if (!boolresult) {
                 statement();
             } else {
@@ -215,12 +233,12 @@ MiddleVal FinalParser::statement() {
         }
     } else if (tk == "ID") {
         std::string varname = token[index].attributevalue;
-        match();//'ID'
-        match();//'='
+        match("ID");//'ID'
+        match("=");//'='
         //std::cout<<"*";
         MiddleVal exp = expression();
         table.UpdateSym(varname, exp);
-        match();//';'
+        match(";");//';'
     }
     return MiddleVal();
 }

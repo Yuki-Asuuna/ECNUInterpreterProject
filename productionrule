@@ -10,19 +10,22 @@
 9:boolop->>=
 10:boolop->==
 11:compoundstmt->{ stmts }
-12:ifstmt->if ( boolexpr ) then stmt else stmt
-13:multexpr->simpleexpr multexprprime
-14:multexprprime->* simpleexpr multexprprime
-15:multexprprime->/ simpleexpr multexprprime
-16:multexprprime->#
-17:program->compoundstmt
-18:simpleexpr->ID
-19:simpleexpr->NUM
-20:simpleexpr->( arithexpr )
-21:stmt->ifstmt
-22:stmt->whilestmt
-23:stmt->assgstmt
-24:stmt->compoundstmt
-25:stmts->stmt stmts
-26:stmts->#
-27:whilestmt->while ( boolexpr ) stmt
+12:decl->int ID = INTNUM
+13:decl->real ID = INTNUM
+14:decls->decl ; decls
+15:decls->#
+16:ifstmt->if ( boolexpr ) then stmt else stmt
+17:multexpr->simpleexpr multexprprime
+18:multexprprime->* simpleexpr multexprprime
+19:multexprprime->/ simpleexpr multexprprime
+20:multexprprime->#
+21:program->decls compoundstmt
+22:simpleexpr->ID
+23:simpleexpr->INTNUM
+24:simpleexpr->REALNUM
+25:simpleexpr->( arithexpr )
+26:stmt->ifstmt
+27:stmt->assgstmt
+28:stmt->compoundstmt
+29:stmts->stmt stmts
+30:stmts->#

@@ -48,13 +48,15 @@ LLGrammaticalAnalyzer::LLGrammaticalAnalyzer() {
 
 
     START = "program";
-    VT={"{", "}" ,"if" ,"(", ")", "then","else","while","ID","=",";","<",">", "<=",">=","==","+","-","*","/","INTNUM","REALNUM","int","real"};
-    VN={"program", "stmt", "compoundstmt", "stmts","ifstmt" ,"whilestmt" ,"assgstmt" ,"boolexpr","boolop","arithexpr", "arithexprprime","multexpr","multexprprime", "simpleexpr","decl","decls"};
-    P.insert({"program", {"decls","compoundstmt"}});
-    P.insert({"decls", {"decl",";","decls"}});
+    VT = {"{", "}", "if", "(", ")", "then", "else", "while", "ID", "=", ";", "<", ">", "<=", ">=", "==", "+", "-", "*",
+          "/", "INTNUM", "REALNUM", "int", "real"};
+    VN = {"program", "stmt", "compoundstmt", "stmts", "ifstmt", "whilestmt", "assgstmt", "boolexpr", "boolop",
+          "arithexpr", "arithexprprime", "multexpr", "multexprprime", "simpleexpr", "decl", "decls"};
+    P.insert({"program", {"decls", "compoundstmt"}});
+    P.insert({"decls", {"decl", ";", "decls"}});
     P.insert({"decls", {"#"}});
-    P.insert({"decl", {"int","ID","=","INTNUM"}});
-    P.insert({"decl", {"real","ID","=","INTNUM"}});
+    P.insert({"decl", {"int", "ID", "=", "INTNUM"}});
+    P.insert({"decl", {"real", "ID", "=", "REALNUM"}});
     P.insert({"stmt", {"ifstmt"}});
     P.insert({"stmt", {"assgstmt"}});
     P.insert({"stmt", {"compoundstmt"}});
@@ -290,8 +292,11 @@ void LLGrammaticalAnalyzer::CreateTABLE() {
 
     TABLE["arithexpr"]["("] = 0;
     TABLE["arithexpr"]["ID"] = 0;
-    TABLE["arithexpr"]["NUM"] = 0;
+    TABLE["arithexpr"]["INTNUM"] = 0;
+    TABLE["arithexpr"]["REALNUM"] = 0;
 
+    TABLE["arithexprprime"]["+"] = 1;
+    TABLE["arithexprprime"]["-"] = 2;
     TABLE["arithexprprime"][")"] = 3;
     TABLE["arithexprprime"][">"] = 3;
     TABLE["arithexprprime"]["<"] = 3;
@@ -299,59 +304,66 @@ void LLGrammaticalAnalyzer::CreateTABLE() {
     TABLE["arithexprprime"][">="] = 3;
     TABLE["arithexprprime"]["=="] = 3;
     TABLE["arithexprprime"][";"] = 3;
-    TABLE["arithexprprime"]["+"] = 1;
-    TABLE["arithexprprime"]["-"] = 2;
 
     TABLE["assgstmt"]["ID"] = 4;
 
-    TABLE["boolop"][">"] = 7;
+    TABLE["boolexpr"]["("] = 5;
+    TABLE["boolexpr"]["ID"] = 5;
+    TABLE["boolexpr"]["INTNUM"] = 5;
+    TABLE["boolexpr"]["REALNUM"] = 5;
+
     TABLE["boolop"]["<"] = 6;
+    TABLE["boolop"][">"] = 7;
     TABLE["boolop"]["<="] = 8;
     TABLE["boolop"][">="] = 9;
     TABLE["boolop"]["=="] = 10;
 
-    TABLE["boolexpr"]["("] = 5;
-    TABLE["boolexpr"]["ID"] = 5;
-    TABLE["boolexpr"]["NUM"] = 5;
 
     TABLE["compoundstmt"]["{"] = 11;
 
-    TABLE["ifstmt"]["if"] = 12;
+    TABLE["decl"]["int"] = 12;
+    TABLE["decl"]["real"] = 13;
 
-    TABLE["multexpr"]["("] = 13;
-    TABLE["multexpr"]["ID"] = 13;
-    TABLE["multexpr"]["NUM"] = 13;
+    TABLE["decls"]["int"] = 14;
+    TABLE["decls"]["real"] = 14;
+    TABLE["decls"]["{"] = 15;
 
-    TABLE["multexprprime"][")"] = 16;
-    TABLE["multexprprime"][">"] = 16;
-    TABLE["multexprprime"]["<"] = 16;
-    TABLE["multexprprime"][">="] = 16;
-    TABLE["multexprprime"]["<="] = 16;
-    TABLE["multexprprime"]["=="] = 16;
-    TABLE["multexprprime"][";"] = 16;
-    TABLE["multexprprime"]["+"] = 16;
-    TABLE["multexprprime"]["-"] = 16;
-    TABLE["multexprprime"]["*"] = 14;
-    TABLE["multexprprime"]["/"] = 15;
+    TABLE["ifstmt"]["if"] = 16;
 
-    TABLE["program"]["{"] = 17;
+    TABLE["multexpr"]["("] = 17;
+    TABLE["multexpr"]["ID"] = 17;
+    TABLE["multexpr"]["INTNUM"] = 17;
+    TABLE["multexpr"]["REALNUM"] = 17;
 
-    TABLE["simpleexpr"]["("] = 20;
-    TABLE["simpleexpr"]["ID"] = 18;
-    TABLE["simpleexpr"]["NUM"] = 19;
+    TABLE["multexprprime"]["*"] = 18;
+    TABLE["multexprprime"]["/"] = 19;
+    TABLE["multexprprime"][")"] = 20;
+    TABLE["multexprprime"][">"] = 20;
+    TABLE["multexprprime"]["<"] = 20;
+    TABLE["multexprprime"][">="] = 20;
+    TABLE["multexprprime"]["<="] = 20;
+    TABLE["multexprprime"]["=="] = 20;
+    TABLE["multexprprime"][";"] = 20;
+    TABLE["multexprprime"]["+"] = 20;
+    TABLE["multexprprime"]["-"] = 20;
 
-    TABLE["stmt"]["{"] = 24;
-    TABLE["stmt"]["if"] = 21;
-    TABLE["stmt"]["while"] = 22;
-    TABLE["stmt"]["ID"] = 23;
+    TABLE["program"]["{"] = 21;
+    TABLE["program"]["int"] = 21;
+    TABLE["program"]["real"] = 21;
 
-    TABLE["stmts"]["{"] = 25;
-    TABLE["stmts"]["}"] = 26;
-    TABLE["stmts"]["if"] = 25;
-    TABLE["stmts"]["while"] = 25;
-    TABLE["stmts"]["ID"] = 25;
+    TABLE["simpleexpr"]["ID"] = 22;
+    TABLE["simpleexpr"]["INTNUM"] = 23;
+    TABLE["simpleexpr"]["REALNUM"] = 24;
+    TABLE["simpleexpr"]["("] = 25;
 
-    TABLE["whilestmt"]["while"] = 27;
+    TABLE["stmt"]["if"] = 26;
+    TABLE["stmt"]["ID"] = 27;
+    TABLE["stmt"]["{"] = 28;
+
+    TABLE["stmts"]["if"] = 29;
+    TABLE["stmts"]["ID"] = 29;
+    TABLE["stmts"]["{"] = 29;
+    TABLE["stmts"]["}"] = 30;
 
 
 //    for (auto x:TABLE) {
@@ -375,7 +387,8 @@ void LLGrammaticalAnalyzer::AnalyzeToken(std::vector<quadraple> &token) {
         std::string tp = S.top();
         S.pop();
         std::string stritem;
-        if (item.tokentype == "number") stritem = "NUM";
+        if (item.tokentype == "real") stritem = "REALNUM";
+        else if (item.tokentype == "int") stritem = "INTNUM";
         else if (item.tokentype == "identifier") stritem = "ID";
         else stritem = token[i].attributevalue;
         if (stritem == tp) {
@@ -392,11 +405,11 @@ void LLGrammaticalAnalyzer::AnalyzeToken(std::vector<quadraple> &token) {
                 break;
             } else {
                 //std::cout << pr <<std::endl;
-                std::cout<< VectorP[pr].first<<"->";
-                for (auto tt : VectorP[pr].second){
-                    std::cout<<tt<<' ';
+                std::cout << VectorP[pr].first << "->";
+                for (auto tt : VectorP[pr].second) {
+                    std::cout << tt << ' ';
                 }
-                std::cout<<std::endl;
+                std::cout << std::endl;
                 for (int j = VectorP[pr].second.size() - 1; j >= 0; j--) {
                     std::string r = VectorP[pr].second[j];
                     if (r != "#") {
@@ -515,34 +528,34 @@ LRGrammaticalAnalyzer::LRGrammaticalAnalyzer() {
 void LRGrammaticalAnalyzer::PrintStack(std::vector<quadraple> &token, int pos, std::stack<int> stateid,
                                        std::stack<std::string> symbol) {
 
-    std::string st,tk,sym;
+    std::string st, tk, sym;
     while (!stateid.empty()) {
         //std::cout << stateid.top()<<' ';
-        st+=std::to_string(stateid.top())+" ";
+        st += std::to_string(stateid.top()) + " ";
         stateid.pop();
     }
 
 
     for (int i = pos; i < token.size(); i++)
         //std::cout << token[i].attributevalue << ' ';
-        tk+=token[i].attributevalue+" ";
+        tk += token[i].attributevalue + " ";
 
 
     while (!symbol.empty()) {
         //std::cout << symbol.top()<<" ";
-        sym+=symbol.top()+" ";
+        sym += symbol.top() + " ";
         symbol.pop();
     }
 
-    std::ofstream analyzeout("AnalyzeProcess.txt",std::ofstream::app);
+    std::ofstream analyzeout("AnalyzeProcess.txt", std::ofstream::app);
 
     analyzeout.setf(std::ios::left);
     analyzeout.width(45);
-    analyzeout<<st<<'|';
+    analyzeout << st << '|';
     analyzeout.width(40);
-    analyzeout<<tk<<'|';
+    analyzeout << tk << '|';
     analyzeout.width(150);
-    analyzeout<<sym<<std::endl;
+    analyzeout << sym << std::endl;
 
     analyzeout.close();
 }

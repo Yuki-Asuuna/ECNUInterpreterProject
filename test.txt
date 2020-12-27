@@ -1,4 +1,23 @@
-int a = 1 ; int b = 2 ;  real c = 3.0 ; 
-    { a = a + 1 ; 
-      b = b * a ;  
-      if ( a < b ) then c = c / 2 ; else c = c / 4 ; }
+int a = 10 ; int b = 2 ;  int c = 3 ;
+//a
+int d = 2;
+{
+    if(a > 9) then{
+        a=1;
+        b=3;
+        c=a+b;
+        if(c>=4) then {
+            a=8;
+
+        }
+        else{
+        }
+    }
+    else{
+        ;
+        b=10000000;
+        ;
+    }
+
+}
+

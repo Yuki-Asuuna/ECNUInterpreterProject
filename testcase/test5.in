@@ -1,0 +1,6 @@
+int a = 1 ; int b = 2 ;  real c = 3.0 ;
+    {
+      c=1;
+        if(a>0) then d=1;
+        else c=4.0;
+      }
